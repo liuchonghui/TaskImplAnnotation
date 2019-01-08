@@ -4,10 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import tools.apts.lroute.LRoute;
-
-
-@LRoute(path = "Main")
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LRouter.getInstance().build("Main2").navigation();
             }
         });
     }
