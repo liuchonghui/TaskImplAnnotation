@@ -16,6 +16,7 @@ compileJava {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':taskimpl-annotation')
+    compile  'com.squareup:javapoet:1.9.0'
 }
 
 apply from: '../install.gradle'
