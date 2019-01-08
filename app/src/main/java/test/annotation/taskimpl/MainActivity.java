@@ -1,12 +1,12 @@
-package test.apts.lroute;
+package test.annotation.taskimpl;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-//import tools.android.taskimpl.annotation.CreateService;
+import tools.android.taskimpl.annotation.CreateService;
 
-//@CreateService(path = "Main")
+@CreateService(path = "Main")
 public class MainActivity extends AppCompatActivity {
 
     @Override
