@@ -17,7 +17,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main2Activity"></activity>
+
+        <service
+            android:name=".TaskImplService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="${applicationId}.action.PLUGIN_INTENT_SERVICE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
