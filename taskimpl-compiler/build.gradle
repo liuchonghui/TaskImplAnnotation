@@ -1,0 +1,23 @@
+apply plugin: 'java'
+
+ext {
+    bintrayName = 'taskimpl-compiler'
+    artifact = bintrayName
+    libraryName = 'TaskImpl compiler'
+    libraryDescription = 'A compiler for create TaskImpl'
+	libraryVersion = taskimpl_compiler_version
+}
+
+compileJava {
+    sourceCompatibility = '1.7'
+    targetCompatibility = '1.7'
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':taskimpl-annotation')
+}
+
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'
+

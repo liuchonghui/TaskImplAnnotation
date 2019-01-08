@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+ext {
+    bintrayName = 'taskimpl-annotation'
+    artifact = bintrayName
+    libraryName = 'TaskImpl Annotation'
+    libraryDescription = 'The annotation used in create TaskImpl'
+    libraryVersion = taskimpl_annotation_version
+}
+
+compileJava {
+    sourceCompatibility = '1.7'
+    targetCompatibility = '1.7'
+}
+
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'
