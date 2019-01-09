@@ -8,4 +8,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.PACKAGE})
 @Retention(RetentionPolicy.CLASS)
 public @interface CreateService {
+    String taskimpl();
+    String tag() default "TaskImplService";
 }

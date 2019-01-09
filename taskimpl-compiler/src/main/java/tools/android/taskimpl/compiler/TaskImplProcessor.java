@@ -1,6 +1,5 @@
 package tools.android.taskimpl.compiler;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.util.Set;
 
@@ -23,44 +22,72 @@ public class TaskImplProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
 
-        // for each javax.lang.model.element.Element annotated with the CustomAnnotation
         for (Element element : roundEnvironment.getElementsAnnotatedWith(CreateService.class)) {
             PackageElement packageElement = processingEnv.getElementUtils().getPackageOf(element);
-            String packageName = packageElement.getQualifiedName().toString();
+            CreateService annotation = element.getAnnotation(CreateService.class);
+
+            String PACKAGENAME = packageElement.getQualifiedName().toString();
+            String CLASS_TASKIMPL = annotation.taskimpl();
+            String TAG = annotation.tag();
 
             StringBuilder builder = new StringBuilder()
-                    .append("package ").append(packageName).append(";\n\n")
-                    .append("public class GeneratedClass {\n\n") // open class
-                    .append("\tpublic String getMessage() {\n") // open method
-                    .append("\t\treturn \"");
+                    .append("package ").append(PACKAGENAME).append(";\n\n")
+                    .append("import android.app.IntentService;\n")
+                    .append("import android.compact.impl.TaskCallback;\n")
+                    .append("import android.compact.impl.TaskImpl;\n")
+                    .append("import android.compact.impl.TaskPayload;\n")
+                    .append("import android.content.Intent;\n")
+                    .append("import android.net.Uri;\n")
+                    .append("import android.os.Bundle;\n\n")
+                    .append("import com.google.gson.Gson;\n\n")
+                    .append("public class TaskImplService extends IntentService {\n\n")
+                    .append("\tpublic static String TAG = \"").append(TAG).append("\";\n\n")
+                    .append("\tpublic TaskImplService() {\n")
+                    .append("\t\tthis(\"\");\n")
+                    .append("\t}\n\n")
+                    .append("\tpublic TaskImplService(String name) {\n")
+                    .append("\t\tsuper(name);\n")
+                    .append("\t}\n\n")
+                    .append("\tprotected TaskImpl createTask() {\n")
+                    .append("\t\treturn new ").append(CLASS_TASKIMPL).append("(getApplicationContext());\n")
+                    .append("\t}\n\n")
+                    .append("\t@Override\n")
+                    .append("\tpublic void onHandleIntent(Intent intent) {\n")
+                    .append("\t\tBundle extra = intent.getExtras();\n")
+                    .append("\t\tif (extra == null) return;\n")
+                    .append("\t\tTaskPayload payload = null;\n")
+                    .append("\t\tObject obj = extra.get(\"taskpayload\");\n")
+                    .append("\t\tif (obj instanceof TaskPayload) payload = (TaskPayload) obj;\n")
+                    .append("\t\tif (payload == null) return;\n")
+                    .append("\t\tif (payload.identify == null || payload.auth == null) return;\n")
+                    .append("\t\tcreateTask().run(getApplicationContext(), payload, new TaskCallback() {\n")
+                    .append("\t\t\t@Override\n")
+                    .append("\t\t\tpublic void onResult(TaskPayload taskPayload) {\n")
+                    .append("\t\t\t\tBundle extras = new Bundle();\n")
+                    .append("\t\t\t\textras.putString(\"action\", \"setTaskPayload\");\n")
+                    .append("\t\t\t\textras.putString(\"extra_json\", new Gson().toJson(taskPayload));\n")
+                    .append("\t\t\t\tUri uri = Uri.parse(\"content://\" + taskPayload.auth);\n")
+                    .append("\t\t\t\ttry {\n")
+                    .append("\t\t\t\t\tgetApplicationContext().getContentResolver().call(uri, \"sendMessagesToHost\", null, extras);\n")
+                    .append("\t\t\t\t} catch (Throwable t) {\n")
+                    .append("\t\t\t\t\tt.printStackTrace();\n")
+                    .append("\t\t\t\t}\n")
+                    .append("\t\t\t}\n")
+                    .append("\t\t});\n")
+                    .append("\t}\n")
+                    .append("}\n");
 
-            // this is appending to the return statement
-            builder.append(packageName).append(" says hello!\\n");
 
-            builder.append("\";\n") // end return
-                    .append("\t}\n") // close method
-                    .append("}\n"); // close class
-
-
-            try { // write the file
-                JavaFileObject source = processingEnv.getFiler().createSourceFile(packageName + ".GeneratedClass");
-
-
+            try {
+                JavaFileObject source = processingEnv.getFiler().createSourceFile(PACKAGENAME + ".TaskImplService");
                 Writer writer = source.openWriter();
                 writer.write(builder.toString());
                 writer.flush();
                 writer.close();
-            } catch (IOException e) {
-                // Note: calling e.printStackTrace() will print IO errors
-                // that occur from the file already existing after its first run, this is normal
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
         }
-
-
-
-
-
-
         return true;
     }
 }

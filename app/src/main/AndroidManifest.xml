@@ -22,7 +22,7 @@
             android:name=".TaskImplService"
             android:exported="false">
             <intent-filter>
-                <action android:name="${applicationId}.action.PLUGIN_INTENT_SERVICE" />
+                <action android:name="${applicationId}.action.TASK_IMPL_SERVICE" />
             </intent-filter>
         </service>
     </application>

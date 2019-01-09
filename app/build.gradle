@@ -34,4 +34,7 @@ dependencies {
 
     compile project(':taskimpl-annotation')
     compile project(':taskimpl-compiler')
+
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'tools.android:interface:1.1.1'
 }
