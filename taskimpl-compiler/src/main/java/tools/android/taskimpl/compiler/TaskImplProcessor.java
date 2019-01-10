@@ -27,6 +27,7 @@ public class TaskImplProcessor extends AbstractProcessor {
             CreateService annotation = element.getAnnotation(CreateService.class);
 
             String PACKAGENAME = packageElement.getQualifiedName().toString();
+            String NAME = annotation.name();
             String CLASS_TASKIMPL = annotation.taskimpl();
             String TAG = annotation.tag();
 
@@ -40,12 +41,12 @@ public class TaskImplProcessor extends AbstractProcessor {
                     .append("import android.net.Uri;\n")
                     .append("import android.os.Bundle;\n\n")
                     .append("import com.google.gson.Gson;\n\n")
-                    .append("public class TaskImplService extends IntentService {\n\n")
+                    .append("public class ").append(NAME).append(" extends IntentService {\n\n")
                     .append("\tpublic static String TAG = \"").append(TAG).append("\";\n\n")
-                    .append("\tpublic TaskImplService() {\n")
+                    .append("\tpublic ").append(NAME).append("() {\n")
                     .append("\t\tthis(\"\");\n")
                     .append("\t}\n\n")
-                    .append("\tpublic TaskImplService(String name) {\n")
+                    .append("\tpublic ").append(NAME).append("(String name) {\n")
                     .append("\t\tsuper(name);\n")
                     .append("\t}\n\n")
                     .append("\tprotected TaskImpl createTask() {\n")
@@ -79,7 +80,7 @@ public class TaskImplProcessor extends AbstractProcessor {
 
 
             try {
-                JavaFileObject source = processingEnv.getFiler().createSourceFile(PACKAGENAME + ".TaskImplService");
+                JavaFileObject source = processingEnv.getFiler().createSourceFile(PACKAGENAME + "." + NAME);
                 Writer writer = source.openWriter();
                 writer.write(builder.toString());
                 writer.flush();

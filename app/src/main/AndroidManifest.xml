@@ -19,10 +19,10 @@
         </activity>
 
         <service
-            android:name=".TaskImplService"
+            android:name="${taskImplServiceName}"
             android:exported="false">
             <intent-filter>
-                <action android:name="${applicationId}.action.TASK_IMPL_SERVICE" />
+                <action android:name="${taskImplServiceAction}" />
             </intent-filter>
         </service>
     </application>

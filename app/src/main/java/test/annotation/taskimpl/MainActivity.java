@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("test.annotation.taskimpl.action.TASK_IMPL_SERVICE");
-                intent.setPackage("test.annotation.taskimpl");
+                Intent intent = new Intent(BuildConfig.MAIN_SERVICE_ACTION);
+                intent.setPackage(BuildConfig.APPLICATION_ID);
                 TaskPayload payload = new TaskPayload();
                 payload.identify = "Ym5P9xoRLynw";
                 payload.auth = getPackageName();

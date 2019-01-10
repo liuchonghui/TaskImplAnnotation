@@ -10,12 +10,14 @@ import com.google.gson.Gson;
 
 public class Task implements TaskImpl {
 
+    static String TAG = BuildConfig.MAIN_SERVICE_TAG;
+
     public Task(Context context) {
 
     }
 
     @Override
     public void run(Context context, TaskPayload payload, TaskCallback callback) {
-        Log.d("PPP", "json|" + new Gson().toJson(payload));
+        Log.d("PPP", TAG + "|json|" + new Gson().toJson(payload));
     }
 }
