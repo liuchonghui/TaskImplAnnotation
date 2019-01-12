@@ -47,5 +47,7 @@ dependencies {
 //    compile project(':taskimpl-annotation')
 //    compile project(':taskimpl-compiler')
     implementation 'tools.android:taskimpl-annotation:0.0.2'
-    implementation 'tools.android:taskimpl-compiler:0.0.2'
+    annotationProcessor 'tools.android:taskimpl-compiler:0.0.3'
+    implementation 'tools.android:interface:1.1.1'
+    implementation 'com.google.code.gson:gson:2.5'
 }
